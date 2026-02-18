@@ -1,5 +1,4 @@
 # RogueEye: Rogue WiFi AP Detector
-
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6)
@@ -14,7 +13,9 @@
   - **Hidden Networks**: Identifies APs hiding their SSID.
   - **Evil Twins**: Detects potential impersonators (SSID security mismatch).
 - **Interactive Dashboard**:
-  - Live "Radar" visual.
+  - Live "Radar" visual with **proximity tracking**. Dots are color-coded (Red < 10m, Orange < 25m, Cyan > 25m)
+    dots move based on signal strength and based on estimated distance.
+  - **Vendor Lookup**: Identifies the manufacturer of detected devices.
   - Sound Alerts for immediate threat notification.
   - System Logs for audit trails.
 - **Configurable**: Toggle sound alerts and auto-scan intervals.
@@ -62,5 +63,6 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
 
 
