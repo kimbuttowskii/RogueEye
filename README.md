@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6)
 
-**RogueEye** is a cybersecurity tool designed to detect Rogue Access Points (APs) in your vicinity. Built for the Final Year Project (FYP), it provides a real-time "Cyberpunk-style" dashboard to monitor WiFi threats.
+**RogueEye** is a cybersecurity tool designed to detect Rogue Access Points (APs) in your surrounding. Built for the Final Year Project (FYP), it provides a real-time "Cyberpunk-style" dashboard to monitor WiFi threats.
 
 ## 🚀 Features
 
@@ -62,4 +62,5 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
 
