@@ -52,6 +52,9 @@
 2.  **Access Dashboard**:
     Open your browser and navigate to: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
+<img width="1920" height="927" alt="image" src="https://github.com/user-attachments/assets/ff14d482-f392-4f38-aba5-80eaea63622a" />
+
+
 ## ⚠️ Disclaimer
 
 This tool is for **educational and defensive purposes only**. Do not use this tool to monitor networks you do not own or have permission to audit.
@@ -59,3 +62,4 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
