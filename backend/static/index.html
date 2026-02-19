@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RogueEye</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h1>Rogue<span class="highlight">Eye</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active" onclick="switchView('dashboard')">Dashboard</li>
+                    <li onclick="switchView('scan')">Logs</li>
+                    <li onclick="switchView('settings')">Settings</li>
+                </ul>
+            </nav>
+            <div class="status-indicator">
+                <span class="dot"></span> System Online
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h2>WiFi Threat Monitor</h2>
+                <div class="actions">
+                    <button id="scan-btn" onclick="startScan()">INITIATE SCAN</button>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view-section">
+                <div class="dashboard-grid">
+                    <!-- Data Table -->
+                    <div class="card network-list">
+                        <h3>Detected Scans</h3>
+                        <div class="table-header">
+                            <span>SSID</span>
+                            <span>BSSID</span>
+                            <span>Vendor</span>
+                            <span>Signal / Dist</span>
+                            <span>Security</span>
+                            <span>Status</span>
+                        </div>
+                        <div id="network-container" class="scrollable-list">
+                            <!-- Items injected here -->
+                            <div class="loading-state">Ready to Scan...</div>
+                        </div>
+                    </div>
+
+                    <!-- Radar/Alert Area -->
+                    <div class="right-panel">
+                        <div class="card radar-view">
+                            <h3>Proximity Radar</h3>
+                            <div class="radar-circle">
+                                <div class="scanner-line"></div>
+                                <div class="dot-marker" style="top: 30%; left: 40%;"></div>
+                                <div class="dot-marker" style="top: 70%; left: 80%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card threats-panel">
+                            <h3>Active Threats</h3>
+                            <div id="threat-container">
+                                <div class="no-threats">No active threats detected.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs View -->
+            <div id="view-scan" class="view-section" style="display: none;">
+                <div class="card">
+                    <h3>System Logs</h3>
+                    <div id="system-logs" class="log-container"
+                        style="color: var(--text-secondary); font-family: var(--font-mono); height: 400px; overflow-y: auto;">
+                        <p class="log-entry">[System] Logs initialized. Waiting for events...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="view-settings" class="view-section" style="display: none;">
+                <div class="card">
+                    <h3>Configuration</h3>
+                    <div style="padding: 1rem;">
+                        <label style="display: block; margin-bottom: 10px;">
+                            <input type="checkbox" id="setting-sound" checked> Enable Sound Alerts
+                        </label>
+                        <label style="display: block; margin-bottom: 10px;">
+                            <input type="checkbox" id="settings-autoscan" checked> Auto-Scan every 30s
+                        </label>
+                        <label style="display: block; margin-bottom: 10px;">
+                            Scan Interface: <select id="settings-interface"
+                                style="background: #0f172a; color: white; border: 1px solid #334155; padding: 5px;">
+                                <option>Wi-Fi</option>
+                            </select>
+                        </label>
+                        <button onclick="saveSettings()"
+                            style="margin-top: 10px; padding: 8px 16px; background: var(--accent-cyan); color: #0b1120; border: none; font-weight: bold; cursor: pointer;">Save
+                            Settings</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Tracking Overlay -->
+        <div id="tracking-overlay" class="tracking-overlay" style="display: none;">
+            <div class="tracking-modal">
+                <div class="tracking-header">
+                    <h3>SIGNAL TRACKER</h3>
+                    <button onclick="stopTracking()" class="close-btn">×</button>
+                </div>
+                <div class="tracking-content">
+                    <div class="target-info">
+                        <span id="track-ssid">SSID</span>
+                        <span id="track-bssid" class="mono">00:00:00:00:00:00</span>
+                    </div>
+
+                    <div class="signal-meter-container">
+                        <div id="signal-value" class="signal-value">-100 <span class="unit">dBm</span></div>
+                        <div class="signal-bar-bg">
+                            <div id="signal-bar-fill" class="signal-bar-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="tracking-controls">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="track-sound" checked>
+                            <span class="slider"></span>
+                            <span class="label">Geiger Audio</span>
+                        </label>
+                    </div>
+
+                    <div class="tracking-status">
+                        Updating in <span id="track-countdown">2.0</span>s
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="/static/app.js"></script>
+    <style>
+        /* Add styles inline for now, can move to css later */
+        .tracking-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracking-modal {
+            background: #0f172a;
+            border: 1px solid var(--accent-cyan);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 242, 0.2);
+        }
+
+        .tracking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+
+        .tracking-header h3 {
+            margin: 0;
+            color: var(--accent-cyan);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .target-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #track-ssid {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.7;
+        }
+
+        .signal-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .unit {
+            font-size: 0.4em;
+            opacity: 0.6;
+        }
+
+        .signal-bar-bg {
+            height: 20px;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .signal-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #eab308, #22c55e);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .tracking-controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .slider {
+            width: 40px;
+            height: 20px;
+            background: #334155;
+            border-radius: 20px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        input:checked+.slider {
+            background: var(--accent-cyan);
+        }
+
+        input:checked+.slider::before {
+            transform: translateX(20px);
+        }
+
+        .tracking-status {
+            text-align: center;
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
+    </style>
+
+</html>
