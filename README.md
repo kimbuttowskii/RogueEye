@@ -15,6 +15,10 @@
 - **Interactive Dashboard**:
   - Live "Radar" visual with **proximity tracking**. Dots are color-coded (Red < 10m, Orange < 25m, Cyan > 25m)
     dots move based on signal strength and based on estimated distance.
+  - **RSSI Signal Tracker (Geiger Counter)**:
+    - Click the 🎯 icon to track a specific AP.
+    - Large signal display and visual meter.
+    - Audio feedback that increases in frequency as signal strength improves (helps physically locate devices).
   - **Vendor Lookup**: Identifies the manufacturer of detected devices.
   - Sound Alerts for immediate threat notification.
   - System Logs for audit trails.
@@ -63,6 +67,7 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
 
 
 
