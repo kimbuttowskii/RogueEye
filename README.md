@@ -1,4 +1,4 @@
-# RogueEye: Rogue WiFi AP Detector
+# RogueEye: A Real-Time Visual Detection and Monitoring System for Rogue WiFi AP 
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6)
@@ -67,6 +67,7 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
 
 
 
