@@ -34,8 +34,8 @@
 
 1.  **Clone the repository** (or download usage files):
     ```bash
-    git clone https://github.com/yourusername/rogue-wifi-detector.git
-    cd rogue-wifi-detector
+    git clone https://github.com/kimbuttowskii/RogueEye.git
+    cd RogueEye
     ```
 
 2.  **Install Dependencies**:
@@ -67,6 +67,7 @@ This tool is for **educational and defensive purposes only**. Do not use this to
 ## 📄 License
 
 MIT License
+
 
 
 
